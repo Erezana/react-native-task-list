@@ -1,4 +1,4 @@
-import { FlatList, StyleSheet, Text, View } from 'react-native';
+import { FlatList, StyleSheet, Text, TextInput, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
@@ -18,8 +18,13 @@ type TaskListNavigation = NativeStackNavigationProp<
 
 export default function TaskList() {
   const [fact, setFact] = useState('');
+  const [search, setSearch] = useState('');
   const navigation = useNavigation<TaskListNavigation>();
   const tasks = useTasks((state) => state.tasks);
+
+  const filteredTasks = tasks.filter((task) =>
+  task.title.toLowerCase().includes(search.toLowerCase())
+);
 
   useEffect(() => {
   const loadFact = async () => {
@@ -50,13 +55,19 @@ export default function TaskList() {
           {fact}
         </Text>
       </View>
+      <TextInput
+        placeholder="Search"
+        value={search}
+        onChangeText={setSearch}
+        style={styles.searchInput}
+      />
       {tasks.length === 0 ? (
         <Text style={styles.noTaskText}>
           No tasks yet.
         </Text>
       ) : (
         <FlatList
-          data={tasks}
+          data={filteredTasks}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
            <TaskBox task={item} />
@@ -94,5 +105,14 @@ factTitle: {
   fontWeight: '600',
   marginLeft: 8,
   color: '#222',
+},
+searchInput: {
+  marginHorizontal: 16,
+  marginBottom: 12,
+  padding: 12,
+  borderWidth: 1,
+  borderColor: '#E5E5E5',
+  borderRadius: 10,
+  backgroundColor: 'white',
 },
 });
