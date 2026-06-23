@@ -1,4 +1,6 @@
 import { create } from 'zustand';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { createJSONStorage, persist } from 'zustand/middleware';
 import { Task } from '../types/Task';
 
 type TasksStore = {
@@ -8,7 +10,9 @@ type TasksStore = {
   deleteTask: (id: string) => void;
 };
 
-const useTasks = create<TasksStore>((set) => ({
+const useTasks = create<TasksStore>()(
+  persist(
+    (set) => ({
   tasks: [],
 
   addTask: (task) =>
@@ -31,6 +35,12 @@ const useTasks = create<TasksStore>((set) => ({
     set((state) => ({
       tasks: state.tasks.filter((task) => task.id !== id),
     })),
-}));
+    }),
+    {
+      name: 'tasks-storage',
+      storage: createJSONStorage(() => AsyncStorage),
+    }
+  )
+);
 
 export default useTasks;
