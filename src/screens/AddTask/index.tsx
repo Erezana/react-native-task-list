@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import {  StyleSheet, TextInput, View } from 'react-native';
+import {  StyleSheet, TextInput, View,Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import useTasks from '../../store/useTasks';
 import uuid from 'react-native-uuid';
@@ -10,9 +10,13 @@ export default function AddTask() {
   const addTask = useTasks((state) => state.addTask);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const [error, setError] = useState('');
 
   const saveTask = () => {
-    if (!title || !description) return;
+    if (!title || !description) {
+      setError('Please fill the field.');
+      return;
+      }
 
   addTask({
   id: uuid.v4() as string,
@@ -33,6 +37,11 @@ export default function AddTask() {
         onChangeText={setTitle}
         style={styles.input}
       />
+        {!title.trim() && error ? (
+        <Text style={styles.error}>
+          {error}
+        </Text>
+      ) : null}
 
       <TextInput
         placeholder="Description"
@@ -41,12 +50,17 @@ export default function AddTask() {
         style={styles.input}
         multiline
       />
+      {!description.trim() && error ? (
+        <Text style={styles.error}>
+          {error}
+        </Text>
+      ) : null}
 
      <Button
-  title="Save"
-  onPress={saveTask}
-  primary={false}
-/>
+      title="Save"
+      onPress={saveTask}
+      primary={false}
+    />
     </View>
   );
 }
@@ -63,4 +77,9 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 12,
   },
+  error: {
+  color: 'red',
+  fontSize: 12,
+  marginTop: -8,
+},
 });
