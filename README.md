@@ -68,7 +68,6 @@ src/
 ├── store/
 ├── types/
 ├── ui/
-└── components/
 ```
 
 ## State Management
