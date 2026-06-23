@@ -9,6 +9,7 @@ import TaskBox from '../../ui/TaskBox';
 import { useEffect, useState } from 'react';
 import { fetchFact } from '../../api/factApi';
 import { Ionicons } from '@expo/vector-icons';
+import FilterButton from '../../ui/FilterButton';
 
 type TaskListNavigation = NativeStackNavigationProp<
   RootStackParamList,
@@ -19,12 +20,24 @@ type TaskListNavigation = NativeStackNavigationProp<
 export default function TaskList() {
   const [fact, setFact] = useState('');
   const [search, setSearch] = useState('');
+  const [filter, setFilter] = useState('all');
   const navigation = useNavigation<TaskListNavigation>();
   const tasks = useTasks((state) => state.tasks);
 
   const filteredTasks = tasks.filter((task) =>
   task.title.toLowerCase().includes(search.toLowerCase())
-);
+  )
+  .filter((task) => {
+    if (filter === 'completed') {
+      return task.status;
+    }
+
+    if (filter === 'not completed') {
+      return !task.status;
+    }
+
+    return true;
+  });
 
   useEffect(() => {
   const loadFact = async () => {
@@ -61,6 +74,11 @@ export default function TaskList() {
         onChangeText={setSearch}
         style={styles.searchInput}
       />
+      <View style={styles.filters}>
+      <FilterButton title="All" active={filter === 'all'} onPress={() => setFilter('all')} />
+      <FilterButton title="Completed" active={filter === 'completed'} onPress={() => setFilter('completed')} />
+      <FilterButton title="Not Completed" active={filter === 'not completed'} onPress={() => setFilter('not completed')} />
+    </View>
       {tasks.length === 0 ? (
         <Text style={styles.noTaskText}>
           No tasks yet.
@@ -114,5 +132,11 @@ searchInput: {
   borderColor: '#E5E5E5',
   borderRadius: 10,
   backgroundColor: 'white',
+},
+filters: {
+  flexDirection: 'row',
+  gap: 8,
+  marginHorizontal: 16,
+  marginBottom: 12,
 },
 });
