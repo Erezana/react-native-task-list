@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity } from "react-native";
 
 type ButtonProps = {
   title: string;
@@ -13,20 +13,10 @@ export default function Button({
 }: ButtonProps) {
   return (
     <TouchableOpacity
-      style={[
-        styles.button,
-        primary && styles.primary,
-      ]}
+      style={[styles.button, primary && styles.primary]}
       onPress={onPress}
     >
-      <Text
-        style={[
-          styles.text,
-          primary && styles.primaryText,
-        ]}
-      >
-        {title}
-      </Text>
+      <Text style={[styles.text, primary && styles.primaryText]}>{title}</Text>
     </TouchableOpacity>
   );
 }
@@ -34,20 +24,20 @@ export default function Button({
 const styles = StyleSheet.create({
   button: {
     marginHorizontal: 16,
-    marginTop: 16,   
+    marginVertical: 8,
     paddingVertical: 14,
-    alignItems: 'center',
+    alignItems: "center",
   },
   primary: {
-    backgroundColor: 'green',
+    backgroundColor: "green",
     borderRadius: 10,
   },
   text: {
-    color: 'black',
+    color: "black",
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: "600",
   },
   primaryText: {
-    color: 'white',
+    color: "white",
   },
 });

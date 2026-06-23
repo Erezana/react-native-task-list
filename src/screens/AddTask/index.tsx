@@ -1,30 +1,30 @@
-import { useState } from 'react';
-import {  StyleSheet, TextInput, View,Text } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import useTasks from '../../store/useTasks';
-import uuid from 'react-native-uuid';
-import Button from '../../ui/Button';
+import { useState } from "react";
+import { StyleSheet, TextInput, View, Text } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import useTasks from "../../store/useTasks";
+import uuid from "react-native-uuid";
+import Button from "../../ui/Button";
 
 export default function AddTask() {
   const navigation = useNavigation();
   const addTask = useTasks((state) => state.addTask);
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [error, setError] = useState('');
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [error, setError] = useState("");
 
   const saveTask = () => {
     if (!title || !description) {
-      setError('Please fill the field.');
+      setError("Please fill the field.");
       return;
-      }
+    }
 
-  addTask({
-  id: uuid.v4() as string,
-  title,
-  description,
-  status: false,
-  createdDate: new Date().toLocaleDateString(),
-});
+    addTask({
+      id: uuid.v4() as string,
+      title,
+      description,
+      status: false,
+      createdDate: new Date().toLocaleDateString(),
+    });
 
     navigation.goBack();
   };
@@ -37,30 +37,22 @@ export default function AddTask() {
         onChangeText={setTitle}
         style={styles.input}
       />
-        {!title.trim() && error ? (
-        <Text style={styles.error}>
-          {error}
-        </Text>
+      {!title.trim() && error ? (
+        <Text style={styles.error}>{error}</Text>
       ) : null}
 
       <TextInput
         placeholder="Description"
         value={description}
         onChangeText={setDescription}
-        style={styles.input}
+        style={[styles.input, styles.descriptionInput]}
         multiline
       />
       {!description.trim() && error ? (
-        <Text style={styles.error}>
-          {error}
-        </Text>
+        <Text style={styles.error}>{error}</Text>
       ) : null}
 
-     <Button
-      title="Save"
-      onPress={saveTask}
-      primary={false}
-    />
+      <Button title="Save" onPress={saveTask} primary={false} />
     </View>
   );
 }
@@ -73,13 +65,18 @@ const styles = StyleSheet.create({
   },
   input: {
     borderWidth: 1,
-    borderColor: '#DDD',
+    borderColor: "#DDD",
     borderRadius: 10,
     padding: 12,
+    backgroundColor: "white",
+  },
+  descriptionInput: {
+    height: 120,
+    textAlignVertical: "top",
   },
   error: {
-  color: 'red',
-  fontSize: 12,
-  marginTop: -8,
-},
+    color: "red",
+    fontSize: 12,
+    marginTop: -8,
+  },
 });

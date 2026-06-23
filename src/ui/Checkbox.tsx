@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 type CheckboxProps = {
   checked: boolean;
@@ -7,10 +7,7 @@ type CheckboxProps = {
 
 export default function Checkbox({ checked, onPress }: CheckboxProps) {
   return (
-    <TouchableOpacity
-      onPress={onPress}
-      style={styles.checkboxRow}
-    >
+    <TouchableOpacity onPress={onPress} style={styles.checkboxRow}>
       <View style={[styles.checkbox, checked && styles.checkboxChecked]}>
         {checked && <Text style={styles.checkmark}>✓</Text>}
       </View>
@@ -20,24 +17,23 @@ export default function Checkbox({ checked, onPress }: CheckboxProps) {
 
 const styles = StyleSheet.create({
   checkboxRow: {
-    marginTop: 10,
-    alignSelf: 'flex-start',
+    marginTop: 4,
   },
   checkbox: {
-    width: 22,
-    height: 22,
+    width: 20,
+    height: 20,
     borderWidth: 2,
     borderRadius: 4,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   checkboxChecked: {
-    backgroundColor: 'green',
-    borderColor: 'green',
+    backgroundColor: "green",
+    borderColor: "green",
   },
   checkmark: {
-    color: 'white',
+    color: "white",
     fontSize: 14,
-    fontWeight: '700',
+    fontWeight: "700",
   },
 });
