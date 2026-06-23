@@ -1,11 +1,17 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { Task } from '../types/Task';
+import useTasks from '../store/useTasks';
+import Checkbox from './Checkbox';
 
 type TextBoxProps = {
-  task: Task;
+task: Task;
 };
 
 export default function TextBox({ task }: TextBoxProps) {
+    const updateTaskStatus = useTasks(
+    (state) => state.updateTaskStatus
+  );
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>
@@ -19,6 +25,10 @@ export default function TextBox({ task }: TextBoxProps) {
       <Text style={styles.date}>
         {task.createdDate}
       </Text>
+      <Checkbox
+        checked={task.status}
+        onPress={() => updateTaskStatus(task.id)}
+      />
     </View>
   );
 }
