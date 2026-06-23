@@ -1,21 +1,16 @@
-import { StyleSheet, Text, View } from 'react-native';
-import { RouteProp, useRoute } from '@react-navigation/native';
+import { StyleSheet, Text, View } from "react-native";
+import { RouteProp, useRoute } from "@react-navigation/native";
 
-import { RootStackParamList } from '../../navigation/types';
-import useTasks from '../../store/useTasks';
+import { RootStackParamList } from "../../navigation/types";
+import useTasks from "../../store/useTasks";
 
-type TaskDetailsRoute = RouteProp<
-  RootStackParamList,
-  'TaskDetails'
->;
+type TaskDetailsRoute = RouteProp<RootStackParamList, "TaskDetails">;
 
 export default function TaskDetails() {
   const route = useRoute<TaskDetailsRoute>();
   const tasks = useTasks((state) => state.tasks);
 
-  const task = tasks.find(
-    (task) => task.id === route.params.taskId
-  );
+  const task = tasks.find((task) => task.id === route.params.taskId);
 
   if (!task) {
     return (
@@ -27,33 +22,26 @@ export default function TaskDetails() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>
-        {task.title}
-      </Text>
+      <View style={styles.card}>
+        <Text style={styles.title}>{task.title}</Text>
 
-      <Text style={styles.label}>
-        Description
-      </Text>
+        <View style={styles.section}>
+          <Text style={styles.label}>Description</Text>
+          <Text style={styles.text}>{task.description}</Text>
+        </View>
 
-      <Text style={styles.text}>
-        {task.description}
-      </Text>
+        <View style={styles.section}>
+          <Text style={styles.label}>Status</Text>
+          <Text style={[styles.text, task.status && styles.completed]}>
+            {task.status ? "Completed" : "Not Completed"}
+          </Text>
+        </View>
 
-      <Text style={styles.label}>
-        Status
-      </Text>
-
-      <Text style={styles.text}>
-        {task.status ? 'Completed' : 'Not Completed'}
-      </Text>
-
-      <Text style={styles.label}>
-        Created
-      </Text>
-
-      <Text style={styles.text}>
-        {task.createdDate}
-      </Text>
+        <View style={styles.section}>
+          <Text style={styles.label}>Created</Text>
+          <Text style={styles.text}>{task.createdDate}</Text>
+        </View>
+      </View>
     </View>
   );
 }
@@ -63,18 +51,37 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 16,
   },
+
+  card: {
+    backgroundColor: "white",
+    borderRadius: 12,
+    padding: 20,
+    borderWidth: 1,
+    borderColor: "#E5E5E5",
+  },
+
   title: {
-    fontSize: 24,
-    fontWeight: '700',
+    fontSize: 20,
+    fontWeight: "700",
     marginBottom: 20,
   },
-  label: {
-    marginTop: 12,
-    fontSize: 14,
-    fontWeight: '600',
+
+  section: {
+    marginBottom: 20,
   },
+
+  label: {
+    fontSize: 14,
+    fontWeight: "600",
+    color: "#777",
+    marginBottom: 6,
+  },
+
   text: {
-    marginTop: 4,
     fontSize: 16,
+  },
+
+  completed: {
+    color: "green",
   },
 });

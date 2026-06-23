@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity } from "react-native";
 
 type FilterButtonProps = {
   title: string;
@@ -14,19 +14,9 @@ export default function FilterButton({
   return (
     <TouchableOpacity
       onPress={onPress}
-      style={[
-        styles.button,
-        active && styles.activeButton,
-      ]}
+      style={[styles.button, active && styles.activeButton]}
     >
-      <Text
-        style={[
-          styles.text,
-          active && styles.activeText,
-        ]}
-      >
-        {title}
-      </Text>
+      <Text style={[styles.text, active && styles.activeText]}>{title}</Text>
     </TouchableOpacity>
   );
 }
@@ -36,16 +26,16 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     paddingHorizontal: 14,
     borderRadius: 20,
-    backgroundColor: '#F5F5F5',
+    backgroundColor: "#F5F5F5",
   },
   activeButton: {
-    backgroundColor: 'green',
+    backgroundColor: "green",
   },
   text: {
-    color: '#555',
-    fontWeight: '500',
+    color: "#555",
+    fontWeight: "500",
   },
   activeText: {
-    color: 'white',
+    color: "white",
   },
 });
