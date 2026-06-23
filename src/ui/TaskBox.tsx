@@ -3,17 +3,30 @@ import { Ionicons } from '@expo/vector-icons';
 import { Task } from '../types/Task';
 import useTasks from '../store/useTasks';
 import Checkbox from './Checkbox';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../navigation/types';
+
+type Navigation = NativeStackNavigationProp<RootStackParamList>;
 
 type TextBoxProps = {
 task: Task;
 };
 
 export default function TextBox({ task }: TextBoxProps) {
+  const navigation = useNavigation<Navigation>();
   const updateTaskStatus = useTasks((state) => state.updateTaskStatus);
   const deleteTask = useTasks((state) => state.deleteTask);
 
   return (
-    <View style={styles.container}>
+    <Pressable
+        style={styles.container}
+        onPress={() =>
+          navigation.navigate('TaskDetails', {
+            taskId: task.id,
+          })
+        }
+>
       <View style={styles.header}>
         <Text style={styles.title}>
           {task.title}
@@ -38,7 +51,7 @@ export default function TextBox({ task }: TextBoxProps) {
         checked={task.status}
         onPress={() => updateTaskStatus(task.id)}
       />
-    </View>
+    </Pressable>
   );
 }
 
