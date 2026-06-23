@@ -1,4 +1,5 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { Task } from '../types/Task';
 import useTasks from '../store/useTasks';
 import Checkbox from './Checkbox';
@@ -8,15 +9,23 @@ task: Task;
 };
 
 export default function TextBox({ task }: TextBoxProps) {
-    const updateTaskStatus = useTasks(
-    (state) => state.updateTaskStatus
-  );
+  const updateTaskStatus = useTasks((state) => state.updateTaskStatus);
+  const deleteTask = useTasks((state) => state.deleteTask);
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>
-        {task.title}
-      </Text>
+      <View style={styles.header}>
+        <Text style={styles.title}>
+          {task.title}
+        </Text>
+
+        <Pressable
+          onPress={() => deleteTask(task.id)}
+          style={styles.deleteButton}
+        >
+          <Ionicons name="trash-outline" size={22} color="red" />
+        </Pressable>
+      </View>
 
       <Text>
         {task.description}
@@ -43,10 +52,20 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#E5E5E5',
   },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 6,
+  },
   title: {
+    flex: 1,
     fontSize: 16,
     fontWeight: '600',
-    marginBottom: 6,
+    marginRight: 8,
+  },
+  deleteButton: {
+    padding: 4,
   },
   date: {
     marginTop: 8,
